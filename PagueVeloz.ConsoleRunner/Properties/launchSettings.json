@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PagueVeloz.ConsoleRunner": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
