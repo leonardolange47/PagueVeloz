@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PagueVeloz.Application.Exceptions;
+using PagueVeloz.Domain.Entities;
 using PagueVeloz.Domain.Services;
 
 namespace PagueVeloz.Api.Controllers
@@ -38,6 +39,20 @@ namespace PagueVeloz.Api.Controllers
                 return NotFound();
 
             return Ok(account);
+        }
+
+        [HttpPost("batch")]
+        public async Task<IActionResult> CreateBatch([FromBody] List<Transaction> transactions)
+        {
+            if (transactions == null || !transactions.Any())
+                return BadRequest("Lista de transações não pode estar vazia.");
+
+            var result = await _transactionService.ProcessTransactionsAsync(transactions);
+
+            if (result == null || !result.Any())
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao processar transações.");
+
+            return Ok(result);
         }
     }
 }

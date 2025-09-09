@@ -101,5 +101,18 @@ namespace PagueVeloz.Application.Services
                 return transaction;
             }
         }
+
+        public async Task<List<Transaction>> ProcessTransactionsAsync(List<Transaction> transactions)
+        {
+            var results = new List<Transaction>();
+
+            foreach (var tx in transactions)
+            {
+                var processed = await ProcessTransactionAsync(tx);
+                results.Add(processed);
+            }
+
+            return results;
+        }
     }
 }

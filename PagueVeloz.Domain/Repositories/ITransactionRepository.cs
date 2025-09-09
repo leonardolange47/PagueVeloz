@@ -7,5 +7,6 @@ namespace PagueVeloz.Domain.Repositories
         Task<Transaction?> GetByReferenceIdAsync(Guid referenceId);
         Task AddAsync(Transaction transaction);
         Task<IEnumerable<Transaction>> GetAllByCustomerAsync(Guid customerId);
+        Task AddRangeAsync(IEnumerable<Transaction> transactions);
     }
 }

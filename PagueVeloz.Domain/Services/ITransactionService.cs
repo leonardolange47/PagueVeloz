@@ -6,5 +6,6 @@ namespace PagueVeloz.Domain.Services
     {
         Task<Transaction> ProcessTransactionAsync(Transaction transaction);
         Task<IEnumerable<Transaction>> GetAllByCustomerAsync(Guid customerId);
+        Task<List<Transaction>> ProcessTransactionsAsync(List<Transaction> transactions);
     }
 }

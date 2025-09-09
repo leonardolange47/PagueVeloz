@@ -36,5 +36,11 @@ namespace PagueVeloz.Infrastructure.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task AddRangeAsync(IEnumerable<Transaction> transactions)
+        {
+            await _context.Transactions.AddRangeAsync(transactions);
+            await _context.SaveChangesAsync();
+        }
     }
 }

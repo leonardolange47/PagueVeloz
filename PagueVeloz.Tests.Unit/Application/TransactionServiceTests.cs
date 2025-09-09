@@ -235,5 +235,33 @@ namespace PagueVeloz.Tests.Unit.Application
 
             }
         }
+
+        [Fact]
+        public async Task ProcessTransactionsAsync_ShouldProcessAllTransactions()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            var transactions = new List<Transaction>
+        {
+            new Transaction(accountId, TransactionType.Credit, 100m, "BRL", "Batch Test 1", null),
+            new Transaction(accountId, TransactionType.Credit, 200m, "BRL", "Batch Test 2", null)
+        };
+
+            // Mock account
+            var account = new Account(Guid.NewGuid(), 0);
+            _accountRepoMock.Setup(r => r.GetByIdAsync(accountId)).ReturnsAsync(account);
+
+            _transactionRepoMock.Setup(r => r.AddAsync(It.IsAny<Transaction>()))
+                                .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _service.ProcessTransactionsAsync(transactions);
+
+            // Assert
+            result.Should().HaveCount(2);
+            result.All(t => t.Status == TransactionStatus.Success).Should().BeTrue();
+
+            _transactionRepoMock.Verify(r => r.AddAsync(It.IsAny<Transaction>()), Times.Exactly(2));
+        }
     }
 }
